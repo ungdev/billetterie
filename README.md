@@ -1,5 +1,11 @@
 # Billetterie inter-evenement
 
+## Configuration Appli Site Etu
+
+URL de retour : `https://url_billetterie/login/callback`
+
+Scopes : public
+
 ## Déploiement sur Dokku
 Documentation permettant de déployer une nouvelle Billetterie sur un nouveau domaine. Si vous souhaitez modifier une Billetterie déjà déployé, jetez un coup d'oeils aux branches avec le prefix `deploy/`.
 
