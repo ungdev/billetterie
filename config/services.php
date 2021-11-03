@@ -35,6 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'slack' => [
+        'exception_webhook' => env('SLACK_EXCEPTION_WEBHOOK', ''),
+    ],
+
     'etupay' => [
         'api_key' => env('ETUPAY_APIKEY'),
         'endpoint' => env('ETUPAY_ENDPOINT', 'https://etupay.utt.fr/initiate').'?service_id='.env('ETUPAY_SERVICEID'),

@@ -32,7 +32,41 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        $this->sendErrorToSlack($exception);
         parent::report($exception);
+    }
+
+    public function sendErrorToSlack(Exception $e)
+    {
+        $url = Config::get('services.slack.exception_webhook');
+        if ($url) {
+            $parsedUrl = parse_url($url);
+
+            $this->client = new \GuzzleHttp\Client([
+                'base_uri' => $parsedUrl['scheme'] . '://' . $parsedUrl['host'],
+            ]);
+
+            $payload = json_encode(
+                [
+                    'text' => get_class($e) . ': ' . $e->getMessage() . ' (' . $e->getCode() . ')',
+                    'username' => 'Exception Billetterie',
+                    'icon_emoji' => ':rotating_light:',
+                    'attachments' => [
+                        [
+                            'title' => 'File',
+                            'text' => $e->getFile() . ':' . $e->getLine(),
+                            'color' => '#d80012',
+                        ],
+                        [
+                            'title' => 'Trace',
+                            'text' => $e->getTraceAsString(),
+                            'color' => '#d80012',
+                        ],
+                    ],
+                ]);
+            $response = $this->client->post($parsedUrl['path'], ['body' => $payload]);
+            return $response;
+        }
     }
 
     /**
