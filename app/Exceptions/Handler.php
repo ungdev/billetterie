@@ -16,7 +16,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
@@ -32,7 +32,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        $this->sendErrorToSlack($exception);
+        if($this->shouldReport($exception)) {
+            $this->sendErrorToSlack($exception);
+        }
         parent::report($exception);
     }
 
