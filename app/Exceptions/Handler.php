@@ -38,7 +38,7 @@ class Handler extends ExceptionHandler
 
     public function sendErrorToSlack(Exception $e)
     {
-        $url = Config::get('services.slack.exception_webhook');
+        $url = config('services.slack.exception_webhook');
         if ($url) {
             $parsedUrl = parse_url($url);
 
