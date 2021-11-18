@@ -6,6 +6,14 @@ URL de retour : `https://url_billetterie/login/callback`
 
 Scopes : public
 
+## Nettoyage
+
+Pour supprimer de vieux billets, d'abord :
+
+1. Sauvegarde de la DB
+2. Suppression des billets `DELETE FROM billets WHERE order_id IN (SELECT id FROM orders WHERE created_at < "2021-01-01");`
+3. Suppression des commandes `DELETE FROM orders WHERE created_at < "2021-01-01";`
+
 ## Déploiement sur Dokku
 Documentation permettant de déployer une nouvelle Billetterie sur un nouveau domaine. Si vous souhaitez modifier une Billetterie déjà déployé, jetez un coup d'oeils aux branches avec le prefix `deploy/`.
 
